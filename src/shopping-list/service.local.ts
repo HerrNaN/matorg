@@ -64,16 +64,27 @@ export class ShoppingListServiceLocal implements ShoppingListService {
   }
 
   async removeItem(id: string): Promise<void> {
-    var items = await this.getItems();
+    let items = await this.getItems();
     items = items.filter((item) => item.id !== id);
     this.storage.setItem(storageKey, JSON.stringify(items));
   }
 
   async checkItem(id: string, checked: boolean): Promise<void> {
-    var items = await this.getItems();
+    let items = await this.getItems();
     items = items.map((item) => {
       if (item.id === id) {
         item.checked = checked;
+      }
+      return item;
+    });
+    this.storage.setItem(storageKey, JSON.stringify(items));
+  }
+
+  async updateItem(id: string, info: ItemInfo): Promise<void> {
+    let items = await this.getItems();
+    items = items.map((item) => {
+      if (item.id === id) {
+        item.info = info;
       }
       return item;
     });

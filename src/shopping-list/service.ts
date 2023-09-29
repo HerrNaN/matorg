@@ -6,6 +6,7 @@ export interface ShoppingListService {
   addItem(info: ItemInfo): Promise<Item>;
   removeItem(id: string): Promise<void>;
   checkItem(id: string, checked: boolean): Promise<void>;
+  updateItem(id: string, info: ItemInfo): Promise<void>;
 }
 
 export class ShoppingListServiceFactory {

@@ -7,17 +7,19 @@ export const AddShoppingListItem: FC<{ className?: string }> = ({
   className,
 }) => {
   const [addItem] = useAddItemMutation();
-  const [itemName, setItemName] = useState("sdf");
+  const [itemName, setItemName] = useState("");
 
   return (
     <Box
       css={css({
         zIndex: 1,
-        boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
       })}
       className={className}
+      p={"sm"}
     >
       <TextInput
+        size="md"
         px={"sm"}
         variant="unstyled"
         radius={0}
