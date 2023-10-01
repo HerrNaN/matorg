@@ -1,19 +1,11 @@
-import { ScrollArea, Stack, Title } from "@mantine/core";
-import React, { FC } from "react";
-import {
-  useCheckItemMutation,
-  useGetItemsQuery,
-  useRemoveItemMutation,
-} from "../../api";
-import { categories } from "../../models";
-import { ShoppingListItem } from "../ShoppingListItem";
+import { ScrollArea, Stack } from "@mantine/core";
+import { FC } from "react";
+import { useGetItemsQuery } from "../../api";
 import { CheckedItemsGroup } from "./CheckedItemsGroup";
 import { UncheckedItemsGroup } from "./UncheckedItemsGroup";
 
 export const ShoppingList: FC<{ className?: string }> = ({ className }) => {
   const { data, isFetching, error } = useGetItemsQuery();
-  const [removeItem] = useRemoveItemMutation();
-  const [checkItem] = useCheckItemMutation();
 
   if (isFetching) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
