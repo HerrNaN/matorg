@@ -5,6 +5,7 @@ export interface ShoppingListService {
   getItems(): Promise<Item[]>;
   addItem(info: ItemInfo): Promise<Item>;
   removeItem(id: string): Promise<void>;
+  removeItems(ids: string[]): Promise<void>;
   checkItem(id: string, checked: boolean): Promise<void>;
   updateItem(id: string, info: ItemInfo): Promise<void>;
 }

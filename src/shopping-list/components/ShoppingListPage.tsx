@@ -2,9 +2,9 @@ import { css } from "@emotion/react";
 import { Stack } from "@mantine/core";
 import { FC } from "react";
 import { Provider } from "react-redux";
-import { AddShoppingListItem } from "./AddShoppingListItem";
-import { ShoppingList } from "./ShoppingList";
 import { shoppingListStore } from "../store";
+import { AddShoppingListItem } from "./AddShoppingListItem";
+import { ShoppingList } from "./list/ShoppingList";
 
 export const ShoppingListPage: FC<{ className?: string }> = ({ className }) => (
   <Provider store={shoppingListStore}>

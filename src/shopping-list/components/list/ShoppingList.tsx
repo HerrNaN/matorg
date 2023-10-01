@@ -1,11 +1,14 @@
-import { ScrollArea, Stack } from "@mantine/core";
-import { FC } from "react";
-import { ShoppingListItem } from "./ShoppingListItem";
+import { ScrollArea, Stack, Title } from "@mantine/core";
+import React, { FC } from "react";
 import {
   useCheckItemMutation,
   useGetItemsQuery,
   useRemoveItemMutation,
-} from "../api";
+} from "../../api";
+import { categories } from "../../models";
+import { ShoppingListItem } from "../ShoppingListItem";
+import { CheckedItemsGroup } from "./CheckedItemsGroup";
+import { UncheckedItemsGroup } from "./UncheckedItemsGroup";
 
 export const ShoppingList: FC<{ className?: string }> = ({ className }) => {
   const { data, isFetching, error } = useGetItemsQuery();
@@ -19,14 +22,12 @@ export const ShoppingList: FC<{ className?: string }> = ({ className }) => {
   return (
     <ScrollArea className={className}>
       <Stack gap={"sm"} px={"sm"}>
-        {data.map((item) => (
-          <ShoppingListItem
-            key={item.id}
-            item={item}
-            onRemove={() => removeItem(item.id)}
-            onClick={() => checkItem({ id: item.id, checked: !item.checked })}
-          />
-        ))}
+        {data.some((item) => !item.checked) && (
+          <UncheckedItemsGroup items={data} />
+        )}
+        {data.some((item) => item.checked) && (
+          <CheckedItemsGroup items={data} />
+        )}
       </Stack>
     </ScrollArea>
   );

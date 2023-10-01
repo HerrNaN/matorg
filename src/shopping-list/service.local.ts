@@ -69,6 +69,12 @@ export class ShoppingListServiceLocal implements ShoppingListService {
     this.storage.setItem(storageKey, JSON.stringify(items));
   }
 
+  async removeItems(ids: string[]): Promise<void> {
+    let items = await this.getItems();
+    items = items.filter((item) => !ids.includes(item.id));
+    this.storage.setItem(storageKey, JSON.stringify(items));
+  }
+
   async checkItem(id: string, checked: boolean): Promise<void> {
     let items = await this.getItems();
     items = items.map((item) => {

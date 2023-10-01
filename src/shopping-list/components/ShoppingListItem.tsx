@@ -4,16 +4,19 @@ import {
   Card,
   Checkbox,
   CloseButton,
+  FocusTrap,
   Group,
   Modal,
   NumberInput,
+  Select,
+  Text,
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { FC } from "react";
 import { useUpdateItemMutation } from "../api";
-import { Item, ItemInfo } from "../models";
+import { Item, ItemInfo, categories } from "../models";
 
 export const ShoppingListItem: FC<{
   item: Item;
@@ -49,32 +52,52 @@ export const ShoppingListItem: FC<{
             close();
           })}
         >
-          <TextInput
-            withAsterisk
-            label="Name"
-            {...form.getInputProps<string>("name")}
-          />
-          <NumberInput
-            label="Quantity"
-            min={0}
-            {...form.getInputProps("quantity")}
-          />
+          <FocusTrap active>
+            <TextInput
+              data-autofocus
+              withAsterisk
+              label="Name"
+              {...form.getInputProps<string>("name")}
+            />
+            <NumberInput
+              label="Quantity"
+              min={0}
+              {...form.getInputProps("quantity")}
+            />
+            <Select
+              label="Category"
+              data={categories.slice()}
+              {...form.getInputProps("category")}
+            />
+          </FocusTrap>
           <Group justify="flex-end" mt="sm">
-            <Button type={"submit"}>Submit</Button>
+            <Button disabled={!form.isDirty()} type={"submit"}>
+              Save
+            </Button>
           </Group>
         </form>
       </Modal>
-      <Card shadow={"sm"} onClick={openModal}>
+      <Card
+        shadow={"sm"}
+        onClick={openModal}
+        py={"xs"}
+        css={css({
+          userSelect: "none",
+          backgroundColor: item.checked ? "#EFFEE7" : undefined,
+        })}
+      >
         <Group align="center">
           <Checkbox
             aria-labelledby="itemLabel"
             checked={item.checked}
             onChange={onClick}
             onClick={(e) => e.stopPropagation()}
+            color={item.checked ? "green" : undefined}
           />
-          <label id={"itemLabel"} css={css({ flexGrow: 1 })}>
+          <Text size="sm" id={"itemLabel"} css={css({ flexGrow: 1 })}>
+            {item.info.quantity ? `${item.info.quantity} pcs ` : ""}
             {item.info.name}
-          </label>
+          </Text>
           <CloseButton
             aria-label={`close ${item.info.name}`}
             onClick={(e) => {

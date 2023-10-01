@@ -128,6 +128,40 @@ export const shoppingListApi = createApi({
         }
       },
     }),
+    removeItems: builder.mutation<void, Item["id"][]>({
+      queryFn: async (ids) => {
+        try {
+          await ShoppingListServiceFactory.get().removeItems(ids);
+          return { data: undefined };
+        } catch (error) {
+          if (error instanceof Error) {
+            return { error };
+          }
+          throw error;
+        }
+      },
+      onQueryStarted: async (ids, { dispatch, queryFulfilled }) => {
+        const patch = dispatch(
+          shoppingListApi.util.updateQueryData(
+            "getItems",
+            undefined,
+            (draft) => {
+              ids.forEach((id) => {
+                const index = draft.findIndex((item) => item.id === id);
+                if (index !== -1) {
+                  draft.splice(index, 1);
+                }
+              });
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patch.undo();
+        }
+      },
+    }),
   }),
 });
 
@@ -135,6 +169,7 @@ export const {
   useGetItemsQuery,
   useAddItemMutation,
   useRemoveItemMutation,
+  useRemoveItemsMutation,
   useCheckItemMutation,
   useUpdateItemMutation,
 } = shoppingListApi;

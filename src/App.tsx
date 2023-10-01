@@ -9,6 +9,7 @@ export const App: FC = () => {
       css={css({
         width: "100vw",
         height: "100vh",
+        backgroundColor: "#F7F7F7",
       })}
     />
   );
