@@ -47,7 +47,12 @@ export class ShoppingListServiceLocal implements ShoppingListService {
   }
 
   async getItems(): Promise<Item[]> {
-    return Promise.resolve(JSON.parse(this.storage.getItem(storageKey)!));
+    const items = this.storage.getItem(storageKey);
+    if (!items) {
+      throw new Error("No items in storage");
+    }
+
+    return Promise.resolve(JSON.parse(items));
   }
 
   async addItem(info: ItemInfo): Promise<Item> {
